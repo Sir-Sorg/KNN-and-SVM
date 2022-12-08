@@ -13,19 +13,15 @@ def standardization(model):
     return STD_data
 
 
-def train(data: list):
+def train(X, Y):
     KNN = KNeighborsClassifier(n_neighbors=9)
-    unsignedData = list(map(lambda arg: arg[0:2], data))
-    lable = list(map(lambda arg: arg[2], data))
-    KNN.fit(unsignedData, lable)
+    KNN.fit(X, Y)
     return KNN
 
 
-def testing(KNN, data):
-    unsignedData = list(map(lambda arg: arg[0:2], data))
-    lable = list(map(lambda arg: arg[2], data))
-    predicted = KNN.predict(unsignedData)
-    accuracy = metrics.f1_score(lable, predicted, average='binary')
+def testing(KNN, X, Y):
+    predicted = KNN.predict(X)
+    accuracy = metrics.f1_score(Y, predicted, average='binary')
     return accuracy
 
 
@@ -50,16 +46,12 @@ whole_feature = np.vstack((C1_models, C2_models))
 standard_feature = standardization(whole_feature)
 
 # adding class lable to data
-data=np.append(whole_feature, labels, axis=1)
+data = np.append(whole_feature, labels, axis=1)
 
-print(data)
 # learn percent = 70% and test = 30% --> lentgh * 0.3 and lentgh * 0.7 !!!
 X_train, X_test, y_train, y_test = train_test_split(
-    data, data_lable, test_size=0.3, random_state=4)
-print('Train set:', X_train,  y_train)
-print('Test set:', X_test,  y_test)
+    data[:, :-1], data[:, -1], test_size=0.3, random_state=4)
 
-knn = train(trainingData)
-f_score = testing(knn, testingData)
-print(
-    f'F-measure is {f_score:.2f} .')
+knn = train(X_train, y_train)
+f_score = testing(knn, X_test, y_test)
+print(f'F-measure is {f_score:.2f} .')
