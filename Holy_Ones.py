@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
-from sklearn import metrics
+from sklearn.metrics import f1_score
 
 
 def standardization(model):
@@ -21,7 +21,7 @@ def train(X, Y):
 
 def testing(KNN, X, Y):
     predicted = KNN.predict(X)
-    accuracy = metrics.f1_score(Y, predicted, average='binary')
+    accuracy = f1_score(Y, predicted, average='binary')
     return accuracy
 
 
@@ -41,17 +41,18 @@ C2_lable = np.ones((300, 1), dtype='int')
 # creating whole data lables in one 370x1 array
 labels = np.vstack((C1_lable, C2_lable))
 
-# normalizing datas
-whole_feature = np.vstack((C1_models, C2_models))
-standard_feature = standardization(whole_feature)
+# normalizing data
+features = np.vstack((C1_models, C2_models))
+standard_feature = standardization(features)
 
 # adding class lable to data
-data = np.append(whole_feature, labels, axis=1)
+data = np.append(features, labels, axis=1)
 
-# learn percent = 70% and test = 30% --> lentgh * 0.3 and lentgh * 0.7 !!!
+# learn percent = 70% and test = 30% --> 
 X_train, X_test, y_train, y_test = train_test_split(
     data[:, :-1], data[:, -1], test_size=0.3, random_state=4)
 
+#training classifre and test it
 knn = train(X_train, y_train)
 f_score = testing(knn, X_test, y_test)
-print(f'F-measure is {f_score:.2f} .')
+print(f'F-measure is {f_score:.2f}')
