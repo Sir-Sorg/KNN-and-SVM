@@ -44,19 +44,17 @@ CLASS_2_COVARIANCE = np.array([[1, 0.5], [0.5, 1.5]])
 # creating models
 C1_models = np.random.multivariate_normal(
     CLASS_1_MEAN, CLASS_1_COVARIANCE, 70)
-C1_lable = np.full((70, 1), 0)
-C1_models = np.append(C1_models, C1_lable, axis=1)
+C1_lable = np.zeros((70, 1), dtype='int')
 C2_models = np.random.multivariate_normal(
     CLASS_2_MEAN, CLASS_2_COVARIANCE, 300)
-C2_lable = np.full((300, 1), 1)
+C2_lable = np.ones((300, 1), dtype='int')
+
+# adding class lable to data
+C1_models = np.append(C1_models, C1_lable, axis=1)
 C2_models = np.append(C2_models, C2_lable, axis=1)
 
 # normalizing datas
-wholeData = np.vstack((C1_models, C2_models))
-
-# adding class lable to data
-data = np.concatenate((C1_models, C2_models))
-data_lable = C1_lable+C2_lable
+whole_data = np.vstack((C1_models, C2_models))
 
 # learn percent = 70% and test = 30% --> lentgh * 0.3 and lentgh * 0.7 !!!
 X_train, X_test, y_train, y_test = train_test_split(
