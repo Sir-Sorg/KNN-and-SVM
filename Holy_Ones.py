@@ -6,18 +6,11 @@ from sklearn.model_selection import train_test_split
 from sklearn import metrics
 
 
-def addLable(list_: list, lable: int):
-    output = list()
-    for thisOne in list_:
-        output.append(thisOne+[lable])
-    return output
-
-
-def standardization(model: list):
+def standardization(model):
     scaler = StandardScaler()
     scaler.fit(model)
-    STD_Data = scaler.transform(model)
-    return STD_Data
+    STD_data = scaler.transform(model)
+    return STD_data
 
 
 def train(data: list):
@@ -44,18 +37,22 @@ CLASS_2_COVARIANCE = np.array([[1, 0.5], [0.5, 1.5]])
 # creating models
 C1_models = np.random.multivariate_normal(
     CLASS_1_MEAN, CLASS_1_COVARIANCE, 70)
-C1_lable = np.zeros((70, 1), dtype='int')
 C2_models = np.random.multivariate_normal(
     CLASS_2_MEAN, CLASS_2_COVARIANCE, 300)
+C1_lable = np.zeros((70, 1), dtype='int')
 C2_lable = np.ones((300, 1), dtype='int')
 
-# adding class lable to data
-C1_models = np.append(C1_models, C1_lable, axis=1)
-C2_models = np.append(C2_models, C2_lable, axis=1)
+# creating whole data lables in one 370x1 array
+labels = np.vstack((C1_lable, C2_lable))
 
 # normalizing datas
-whole_data = np.vstack((C1_models, C2_models))
+whole_feature = np.vstack((C1_models, C2_models))
+standard_feature = standardization(whole_feature)
 
+# adding class lable to data
+data=np.append(whole_feature, labels, axis=1)
+
+print(data)
 # learn percent = 70% and test = 30% --> lentgh * 0.3 and lentgh * 0.7 !!!
 X_train, X_test, y_train, y_test = train_test_split(
     data, data_lable, test_size=0.3, random_state=4)
