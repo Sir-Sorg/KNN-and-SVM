@@ -23,11 +23,11 @@ CLASS_2_COVARIANCE = np.array([[1, 0.5], [0.5, 1.5]])
 
 # creating models
 C1_models = np.random.multivariate_normal(
-    CLASS_1_MEAN, CLASS_1_COVARIANCE, 70)
+    CLASS_1_MEAN, CLASS_1_COVARIANCE, 100)
 C2_models = np.random.multivariate_normal(
-    CLASS_2_MEAN, CLASS_2_COVARIANCE, 300)
-C1_lable = np.zeros(70, dtype='int')
-C2_lable = np.ones(300, dtype='int')
+    CLASS_2_MEAN, CLASS_2_COVARIANCE, 100)
+C1_lable = np.zeros(100, dtype='int')
+C2_lable = np.ones(100, dtype='int')
 
 # creating whole data lables in one 370, array
 labels = np.append(C1_lable, C2_lable)
