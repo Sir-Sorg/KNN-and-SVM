@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import svm
 from sklearn.model_selection import train_test_split
@@ -13,7 +12,7 @@ def train(X, Y):
 
 def testing(clf, X, Y):
     predicted = clf.predict(X)
-    accuracy=classification_report(Y, predicted)
+    accuracy = classification_report(Y, predicted)
     return accuracy
 
 
