@@ -2,15 +2,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn import svm
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import f1_score
+from sklearn.metrics import classification_report
 
 
 def train(X, Y):
-    pass
+    classifier = svm.SVC(kernel='rbf')
+    classifier.fit(X, Y)
+    return classifier
 
 
-def testing(KNN, X, Y):
-    pass
+def testing(clf, X, Y):
+    predicted = clf.predict(X)
+    accuracy=classification_report(Y, predicted)
+    return accuracy
 
 
 CLASS_1_MEAN = np.array([2.5, 0.25])
@@ -26,16 +30,17 @@ C2_models = np.random.multivariate_normal(
 C1_lable = np.zeros(70, dtype='int')
 C2_lable = np.ones(300, dtype='int')
 
-# creating whole data lables in one 370x1 array
+# creating whole data lables in one 370, array
 labels = np.append(C1_lable, C2_lable)
 
 # creating whole data feature in one 370x2 array
 features = np.vstack((C1_models, C2_models))
 
-# learn percent = 70% and test = 30% --> 
-X_train, X_test, y_train, y_test = train_test_split(features, labels, test_size=0.3, random_state=4)
+# learn percent = 70% and test = 30% -->
+X_train, X_test, y_train, y_test = train_test_split(
+    features, labels, test_size=0.3, random_state=4)
 
 # training classifre and test it
 classifier = train(X_train, y_train)
-f_score = testing(classifier, X_test, y_test)
-print(f'F-measure is {f_score:.2f}')
+accuracy = testing(classifier, X_test, y_test)
+print(accuracy)
